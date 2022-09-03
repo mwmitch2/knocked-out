@@ -19,4 +19,4 @@ and round robin solutions. Seeding for the brackets can be set by the tournament
 indepth statistic tracking is viewable at all levels with colored graphics and detailed reports. Tournament details are
 stored in a database so organizers can access data from previous tournament.
 
-Game on!
+Game on!!!
