@@ -1,0 +1,33 @@
+.deleteBtn {
+    visibility: hidden;
+}
+
+.team-listItem:hover > .deleteBtn {
+    visibility: visible;
+}
+
+.list-group li {
+    margin-bottom: 12px;
+}
+
+body {
+    background: #eee;
+}
+
+.team-listItem {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.middle {
+    vertical-align: middle;
+}
+
+.center {
+    text-align: center;
+}
+
+.team-listItem:hover{
+    box-shadow: 5px 6px 6px 2px #e9ecef;
+    transform: scale(1.05);
+}
