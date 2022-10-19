@@ -1,0 +1,42 @@
+<%- include('./partials/head') %>
+<%- include('./partials/header') %>
+<body class="mt-5">
+	<div class="row">
+        <h2 style="text-align: center">Sign Up</h2>
+        <div style="width: 30%; margin: 25px auto;">
+            <form action="/register" method="post">
+                <div class="form-group mb-4">
+                    <input class="form-control" type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group mb-4">
+                    <input class="form-control" type="password" name="password" placeholder="Password" required>
+                </div>
+                
+                <select class="form-select mb-4" name="role" onchange="displayTeamCheck(this)" required>
+                    <option selected>Select Role</option>
+                    <option value="organizer">Organizer</option>
+                    <option value="team">Team</option>
+                </select>
+
+                <div id="teamName" class="form-group mb-4" style="display: none;">
+                    <input class="form-control" type="text" name="teamName" placeholder="Team name">
+                </div>
+
+                <div class="form-group mb-4">
+                    <button class="btn btn-primary btn-block">Sign Up!</button>
+                </div>
+            </form>
+
+            <div class="login-section">Already have an account? <a href="/login" class="text-info">Log In</a></div>
+        </div>
+    </div>
+</body>
+
+<script src="/scripts/register.js"></script>
+
+<%- include('./partials/footer') %>
+
+
+
+
+

@@ -1,0 +1,37 @@
+<header>
+    <nav class="navbar navbar-dark navbar-expand-sm fixed-top bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <i class="fas fa-blog"></i>Knocked Out
+            </a>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                   
+                </ul>
+    
+                <ul class="navbar-nav ms-auto">
+                    <% if(!currentUser){ %>
+                        <li class="nav-item">
+                            <a href="/register" class="nav-link active">
+                                Sign Up
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/login" class="nav-link active">
+                                Login
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li><a class="nav-link active" href="/logout">Logout</a></li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<br>
