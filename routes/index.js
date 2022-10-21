@@ -72,7 +72,10 @@ router.get('/logout', function(req, res, next) {
 })
 
 router.get('/admin', function(req, res) {
-    res.render('admin')
+    User.find({ role:"team"}, function (err, teams) {
+        if(err) console.log(err)
+        res.render('admin', {"teams": teams})
+    })
 })
 
 router.get('/organizer', function(req, res) {
@@ -81,6 +84,12 @@ router.get('/organizer', function(req, res) {
     } else {
         res.render('login')
     }
+})
+
+router.post('/admin', function(req, res) {
+    var teamName = req.body.teamName;
+    User.collection.deleteOne({ teamName: teamName });
+    res.redirect('/admin');
 })
 
 module.exports = router;
