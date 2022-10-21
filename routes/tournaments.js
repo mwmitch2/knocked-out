@@ -1,6 +1,6 @@
 let express = require('express')
-var router = express.Router()
-//let Tournament = require('../models/tournament')
+let router = express.Router()
+let Tournament = require('../models/tournament')
 
 // Tournaments page - display all
 router.get('/', function(req, res) {
