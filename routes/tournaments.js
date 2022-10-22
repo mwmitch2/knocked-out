@@ -32,5 +32,34 @@ router.post('/new', function(req, res) {
     })
 })
 
+// SHOW - shows more info about one tournament
+router.get("/:id", function(req, res){
+    //find the campground with provided ID
+    Tournament.findById(req.params.id).populate("teams").exec(function(err, foundTournament){
+        if(err || !foundTournament){
+            console.log(err);
+            return res.redirect('/tournaments');
+        }
+    
+        //render show template with that campground
+        res.render("tournaments/show", {tournament: foundTournament});
+    });
+});
+
+// Handle POST for team joining a tournament
+router.post("/:id", function(req, res){
+    //lookup campground using ID
+    Tournament.findById(req.params.id, function(err, tournament){
+        if(err){
+            console.log(err);
+            res.redirect('/tournaments' + tournament._id);
+        } else {
+            // addToSet() makes sure it is unique
+            tournament.teams.addToSet(req.user)            
+            tournament.save()
+            res.redirect('/tournaments/' + tournament._id)
+        }
+    })
+})
 
 module.exports = router

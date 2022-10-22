@@ -10,7 +10,13 @@ let tournamentSchema = new mongoose.Schema({
             ref: 'User'
         },
         username: String
-    }
+    },
+    teams: [
+        {
+           type: mongoose.Schema.Types.ObjectId,
+           ref: 'User'
+        }
+     ]
 })
 
 module.exports = mongoose.model('Tournament', tournamentSchema)

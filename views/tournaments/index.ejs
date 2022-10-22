@@ -11,7 +11,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Size</th>
-                        <th scope="col">Type</th>
+                        <th scope="col">Elimination Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -23,7 +23,7 @@
                             <td><%= tournament.name %></td>
                             <td><%= tournament.size %></td>
                             <td><%= tournament.type %></td>
-                            <td><button class="btn btn-primary">Join</button></td>
+                            <td><a href="/tournaments/<%= tournament._id %>" class="btn btn-primary">Learn More</a></td>
                         </tr>
                     <% }) %>
 
