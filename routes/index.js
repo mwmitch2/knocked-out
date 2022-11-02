@@ -3,6 +3,7 @@ let router = express.Router()
 let passport = require('passport')
 let User = require('../models/user')
 let Organizer = require('../models/organizer')
+let Tournament = require('../models/tournament')
 
 // GET: root
 router.get('/', function(req, res) {
@@ -21,7 +22,8 @@ router.post('/register', function(req, res) {
     if (req.body.role == 'organizer') {
         let newOrganizer = new Organizer({username: req.body.username})
         newOrganizer.role = req.body.role
-        
+        newOrganizer.tournament = "Tournament 1"
+
         Organizer.register(newOrganizer, req.body.password, function(err, user) {
             if (err) {
                 console.log(err)
@@ -80,7 +82,24 @@ router.get('/admin', function(req, res) {
 
 router.get('/organizer', function(req, res) {
     if (req.isAuthenticated()) {
-        res.render('organizer') 
+        // Search for a tournament created by this organizer
+        let author = {
+            id: req.user._id,
+            username: req.user.username
+        }
+        Tournament.find({author}, function(err, tournament) {
+            if (err) {
+                console.log(err)
+            } else {
+                // This organizer has not created a tournament yet
+                if (tournament.length == 0) {
+                    res.render('organizer')
+                } else {
+                    // Return tournament created by this organizer
+                    res.render('organizer', {'tournament': tournament})
+                }
+            }
+        })
     } else {
         res.render('login')
     }
