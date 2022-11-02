@@ -22,7 +22,6 @@ router.post('/register', function(req, res) {
     if (req.body.role == 'organizer') {
         let newOrganizer = new Organizer({username: req.body.username})
         newOrganizer.role = req.body.role
-        newOrganizer.tournament = "Tournament 1"
 
         Organizer.register(newOrganizer, req.body.password, function(err, user) {
             if (err) {
