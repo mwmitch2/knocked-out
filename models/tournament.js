@@ -13,8 +13,9 @@ let tournamentSchema = new mongoose.Schema({
     },
     teams: [
         {
-           type: mongoose.Schema.Types.ObjectId,
-           ref: 'User'
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            sparse: true
         }
      ]
 })

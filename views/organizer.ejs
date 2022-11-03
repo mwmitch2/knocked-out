@@ -26,6 +26,11 @@
                     </a>
                 </div>
                 <div class="col-md">
+
+                    <!-- Display if teams have joined -->
+                    <% if (tournament.teams.length > 0)  { %>
+                    <h2>Teams</h2>
+
                     <table class="table table-dark table-striped table-sm">
                         <thead>
                             <tr>
@@ -34,45 +39,23 @@
                             </tr>
                         </thead>
                         <tbody>
+
+                            <% let i = 1; tournament.teams.forEach(function(team) { %>
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Caffeinated Foxes</td>
+                                <th scope="row"><%= i %></th>
+                                <td><%= team.teamName %></td>
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>The System Errors</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>AWESOM-O-340</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>AJA</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>[Team Name Here]</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>XJM</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">7</th>
-                                <td>The Brogrammers</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">8</th>
-                                <td>Wan-Ten-Soup</td>
-                            </tr>
+                            <% i++; }) %>
                         </tbody>
                     </table>
+                    <% } else { %>
+                    <h2>No Team Has Joined Yet.</h2>
+                    <% } %>
+
                 </div>
             </div>
         </div>
     </section>
-
     <section id="view" class="bg-light text-dark p-3">
         <div class="container text-center">
             <div class="row align-items-center col-md p-5">
@@ -110,7 +93,6 @@
                             ]
                         ]
                     };
-
                     /* Called whenever bracket is modified
                     *
                      * data:     changed bracket object in format given to init
@@ -126,7 +108,6 @@
                                                       data: json})
                         */
                     }
-
                     $(function () {
                         var container = $('div#save .tournament')
                         container.bracket({
@@ -134,21 +115,106 @@
                             save: saveFn,
                             userData: "http://myapi"
                         })
-
                         /* You can also inquiry the current data */
                         var data = container.bracket('data')
                         $('#dataOutput').text(jQuery.toJSON(data))
                     })
-
                     $('.tournament').bracket({
                         init: singleElimination
                     })
-
+                </script>
+                <script type="text/javascript">
+                    function newFields() {
+                        return 'Bracket name [a-z0-9_] <input type="text" id="bracketId" class="empty" /><input type="submit" value="Create" disabled />'
+                    }
+                    function newBracket() {
+                        $('#editor').empty().bracket({
+                            save: function (data) {
+                                $('pre').text(jQuery.toJSON(data))
+                            }
+                        })
+                        $('#fields').html(newFields())
+                    }
+                    function refreshSelect(pick) {
+                        var select = $('#bracketSelect').empty()
+                        $('<option value="">New bracket</option>').appendTo(select)
+                        $.getJSON('rest.php?op=list', function (data) {
+                            $.each(data, function (i, e) {
+                                select.append('<option value="' + e + '">' + e + '</option>')
+                            })
+                        }).success(function () {
+                            if (pick) {
+                                select.find(':selected').removeAttr('seleceted')
+                                select.find('option[value="' + pick + '"]').attr('selected', 'selected')
+                                select.change()
+                            }
+                        })
+                    }
+                    function hash() {
+                        var bracket = null
+                        var parts = window.location.href.replace(/#!([a-z0-9_]+)$/gi, function (m, match) {
+                            bracket = match
+                        });
+                        return bracket;
+                    }
+                    $(document).ready(newBracket)
+                    $(document).ready(function () {
+                        newBracket()
+                        $('input#bracketId').live('keyup', function () {
+                            var input = $(this)
+                            var submit = $('input[value="Create"]')
+                            if (input.val().length === 0) {
+                                input.removeClass('invalid')
+                                input.addClass('empty')
+                                submit.attr('disabled', 'disabled')
+                            }
+                            else if (input.val().match(/[^0-9a-z_]+/)) {
+                                input.addClass('invalid')
+                                submit.attr('disabled', 'disabled')
+                            }
+                            else {
+                                input.removeClass('empty invalid')
+                                submit.removeAttr('disabled')
+                            }
+                        })
+                        $('input[value="Create"]').live('click', function () {
+                            $(this).attr('disabled', 'disabled')
+                            var input = $('input#bracketId')
+                            var bracketId = input.val()
+                            if (bracketId.match(/[^0-9a-z_]+/))
+                                return
+                            var data = $('#editor').bracket('data')
+                            var json = jQuery.toJSON(data)
+                            $.getJSON('rest.php?op=set&id=' + bracketId + '&data=' + json)
+                                .success(function () {
+                                    refreshSelect(bracketId)
+                                })
+                        })
+                        refreshSelect(hash())
+                        $('#bracketSelect').change(function () {
+                            var value = $(this).val()
+                            location.hash = '#!' + value
+                            if (!value) {
+                                newBracket()
+                                return
+                            }
+                            $('#fields').empty()
+                            $.getJSON('rest.php?op=get&id=' + value, function (data) {
+                                $('#editor').empty().bracket({
+                                    init: data,
+                                    save: function (data) {
+                                        var json = jQuery.toJSON(data)
+                                        $('pre').text(jQuery.toJSON(data))
+                                        $.getJSON('rest.php?op=set&id=' + value + '&data=' + json)
+                                    }
+                                })
+                            }).error(function () { })
+                        })
+                    })
                 </script>
             </div>
         </div>
     </section>
-
     <% } else { %>
     <!--Sections-->
     <section id="create" class="p-5">
@@ -169,13 +235,11 @@
                         in a first come, first served basis unless random seeding is selected. Lets
                         Go!
                     <p>
-
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-dark text-white" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">
                             <i class="bi bi-chevron-right"></i>Create
                         </button>
-
                         <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
@@ -196,14 +260,13 @@
                                         <div class="col-md-2 pt-3">
                                             <label class="form-label">Size</label>
                                             <select name="size" class="form-select">
-                                                <option value="4" selected>2²</option>
-                                                <option value="8">2³</option>
-                                                <option value="16">2⁴</option>
-                                                <option value="32">2⁵</option>
-                                                <option value="64">2⁶</option>
+                                                <option value="4" selected>4</option>
+                                                <option value="8">8</option>
+                                                <option value="16">16</option>
+                                                <option value="32">32</option>
+                                                <option value="64">64</option>
                                             </select>
                                         </div>
-
                                         <div class="col-md-10">
                                             <label class="form-label">Type</label>
                                             <select name="type" class="form-select">
@@ -212,7 +275,6 @@
                                                 <option value="double">Double Elimination</option>
                                             </select>
                                         </div>
-
                                         <div class="col-12 mt-3">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="random">
@@ -221,7 +283,6 @@
                                                 </label>
                                             </div>
                                         </div>
-
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Cancel</button>
@@ -230,7 +291,6 @@
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>

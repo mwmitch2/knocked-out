@@ -1,35 +1,35 @@
 <%- include('../partials/head') %>
 <%- include('../partials/header') %>
 
-    <body class="mt-5">
-        <div class="container">
-            <h2 class="text-center">Tournaments You Can Join</h2>
+<body class="mt-5">
+    <div class="container">
+        <h2 class="text-center">Tournaments You Can Join</h2>
 
-            <table class="table table-hover mt-5">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Size</th>
-                        <th scope="col">Elimination Type</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table class="table table-hover mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">Elimination Type</th>
+                </tr>
+            </thead>
+            <tbody>
 
-                    <% tournaments.forEach(function(tournament) { %>
-                        
-                        <tr>
-                            <th scope="row">1</th>
-                            <td><%= tournament.name %></td>
-                            <td><%= tournament.size %></td>
-                            <td><%= tournament.type %></td>
-                            <td><a href="/tournaments/<%= tournament._id %>" class="btn btn-primary">Learn More</a></td>
-                        </tr>
-                    <% }) %>
+                <% let i = 1; tournaments.forEach(function(tournament) { %>
 
-                </tbody>
-            </table>
+                <tr>
+                    <th scope="row"><%= i %></th>
+                    <td><%= tournament.name %></td>
+                    <td><%= tournament.size %></td>
+                    <td><%= tournament.type %></td>
+                    <td><a href="/tournaments/<%= tournament._id %>" class="btn btn-primary">Learn More</a></td>
+                </tr>
+                <% i++; }) %>
 
-        </div>
-    </body>
+            </tbody>
+        </table>
+
+    </div>
+</body>
 <%- include('../partials/footer') %>

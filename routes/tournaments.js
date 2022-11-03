@@ -35,14 +35,14 @@ router.post('/new', function(req, res) {
 // SHOW - shows more info about one tournament
 router.get("/:id", function(req, res){
     // find the tournament with provided ID
-    Tournament.findById(req.params.id).populate("teams").exec(function(err, foundTournament){
+    Tournament.findById(req.params.id).populate('teams').exec(function(err, foundTournament){
         if(err || !foundTournament){
             console.log(err);
             return res.redirect('/tournaments');
         }
     
         // render template with that tournament
-        res.render("tournaments/show", {tournament: foundTournament});
+        res.render('tournaments/show', {tournament: foundTournament});
     });
 });
 
