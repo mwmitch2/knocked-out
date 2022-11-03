@@ -86,17 +86,12 @@ router.get('/organizer', function(req, res) {
             id: req.user._id,
             username: req.user.username
         }
-        Tournament.find({author}, function(err, tournament) {
+        Tournament.findOne({author}).populate('teams').exec(function(err, tournament) {
             if (err) {
                 console.log(err)
             } else {
-                // This organizer has not created a tournament yet
-                if (tournament.length == 0) {
-                    res.render('organizer')
-                } else {
-                    // Return tournament created by this organizer
-                    res.render('organizer', {'tournament': tournament})
-                }
+                // Return tournament created by this organizer
+                res.render('organizer', {'tournament': tournament})
             }
         })
     } else {
