@@ -3,22 +3,22 @@
 
 <body class="mt-4">
 
-	<section class="bg-dark text-light p-5 pt-lg-0 pt-lg-4 text-center text-sm-start">
+    <section class="bg-dark text-light p-5 pt-lg-0 pt-lg-4 text-center text-sm-start">
         <div class="container">
             <div class="d-sm-flex align-items-center justify-content-between">
                 <div>
-                <h1>Don't Get <span class="text-warning">Knocked Out</span> </h1>
-                <p class="lead my-4">
-                    Join a tournament right now to prove you've got what it takes.
-                    Sign up your team to take on the competition and prove to everyone
-                    you deserve the number one spot.
-                </p>
+                    <h1>Don't Get <span class="text-warning">Knocked Out</span> </h1>
+                    <p class="lead my-4">
+                        Join a tournament right now to prove you've got what it takes.
+                        Sign up your team to take on the competition and prove to everyone
+                        you deserve the number one spot.
+                    </p>
 
-                <% if(currentUser){ %>
+                    <% if(currentUser){ %>
                     <a href="/tournaments" class="btn btn-primary btn-lg">Join</a>
-                <% } else { %>
-                    <a href="/register" class="btn btn-primary btn-lg">Sign Up</a>
-                <% } %>
+                    <% } else { %>
+                    <a href="/tournaments" class="btn btn-primary btn-lg">Sign Up</a>
+                    <% } %>
 
                 </div>
                 <div class="col bg-dark text-dark">
@@ -46,7 +46,9 @@
                                 Organizers
                             </h3>
                             <p class="card-text">
-                                As a tournament organizer it is your responsibility to create a fun and fair environment for all participants. Carefully consider the necessities of all parties before creating a tournament.
+                                As a tournament organizer it is your responsibility to create a fun and fair environment
+                                for all participants. Carefully consider the necessities of all parties before creating
+                                a tournament.
                             </p>
                             <a href="/organizer" class="btn btn-primary">Create Tournament</a>
                         </div>
@@ -62,8 +64,10 @@
                                 Admin
                             </h3>
                             <p class="card-text">
-                                Admins need to login to prove their credentials because they have a lot of power and we all know the saying, so I won't say it again...just kidding!
-                                 "With great power comes lots of passwords to remember and i've lost more passwords than you've remembered." - Uncle Ben
+                                Admins need to login to prove their credentials because they have a lot of power and we
+                                all know the saying, so I won't say it again...just kidding!
+                                "With great power comes lots of passwords to remember and i've lost more passwords than
+                                you've remembered." - Uncle Ben
                             </p>
                             <a href="/admin" class="btn btn-dark">Admin Tools</a>
                         </div>

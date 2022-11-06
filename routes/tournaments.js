@@ -4,10 +4,14 @@ let Tournament = require('../models/tournament')
 
 // Tournaments page - display all
 router.get('/', function(req, res) {
-    // Get all tournaments and send data to the view
-    Tournament.find({}, function(err, tournaments) {
-        res.render('tournaments/index', {tournaments: tournaments})
-    })
+    if (req.isAuthenticated()) {
+        // Get all tournaments and send data to the view
+        Tournament.find({}, function(err, tournaments) {
+            res.render('tournaments/index', {tournaments: tournaments})
+        })
+    } else {
+        res.render('login')
+    }
 })
 
 // Handle POST request to create new tournament

@@ -17,7 +17,6 @@ router.get('/register', function(req, res) {
 
 // Handle sign-up
 router.post('/register', function(req, res) {
-
     // Save according to the role (Team or Organizer)
     if (req.body.role == 'organizer') {
         let newOrganizer = new Organizer({username: req.body.username})
@@ -59,7 +58,7 @@ router.get('/login', function(req, res) {
 // Handle login
 router.post('/login', passport.authenticate('local', 
     {
-        successRedirect: '/',
+        successRedirect: 'back',
         failureRedirect: '/login',
     }), function(req, res) {
 })
