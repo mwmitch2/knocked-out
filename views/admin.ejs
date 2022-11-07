@@ -8,7 +8,7 @@
                         <div class="col-2 mt-5">
                             <!-- List group -->
                             <div class="list-group" id="tab-list" role="tablist">
-                                <a class="list-group-item list-group-item-action active" data-bs-toggle="list"
+                                <a class="list-group-item list-group-item-action" data-bs-toggle="list"
                                     href="#tournament" role="tab" id="tournament-tab">Tournaments</a>
                                 <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#team"
                                     role="tab" id="team-tab">Teams</a>
@@ -18,7 +18,7 @@
                             <input class="form-control mb-2" id="search" type="text" placeholder="Search...">
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tournament" role="tabpanel">
+                                <div class="tab-pane fade show" id="tournament" role="tabpanel">
                                     <ul class="list-group" id="list-container">
                                         <% tournaments.forEach(function(tournament) { %>
                                             <li class="list-group-item p-3 tournament-listItem"
@@ -34,7 +34,7 @@
                                             <% }) %>
                                     </ul>
                                 </div>
-                                <div class="tab-pane" id="team" role="tabpanel">
+                                <div class="tab-pane fade" id="team" role="tabpanel">
                                     <ul class="list-group" id="list-container">
                                         <% teams.forEach(function(team) { %>
                                             <li class="list-group-item p-3 team-listItem"
@@ -71,14 +71,15 @@
                 }
             </script>
             <script>
-                $(document).ready(function () {
+                $(function () {
                     $('a[data-bs-toggle="list"]').on('show.bs.tab', function (e) {
                         localStorage.setItem('activeTab', $(e.target).attr('href'));
                     });
-                    var activeTab = localStorage.getItem('activeTab');
+                    var activeTab = localStorage.getItem('activeTab')
                     if (activeTab) {
-                        $('#tab-list a[href="' + activeTab + '"]').tab('show');
+                        $(`a[href="${activeTab}"]`).tab('show');
                     }
+                    
                 });
             </script>
 
