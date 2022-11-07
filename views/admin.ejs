@@ -25,11 +25,14 @@
                                                 id="<%= tournament.name %>-listItem"><span class="middle">
                                                     <%= tournament.name %>
                                                 </span>
-                                                <button type="button" id="<%= tournament.name %>-btn"
-                                                    class="btn btn-outline-danger float-end endBtn"
+                                                <button type="button" id="<%= tournament.name %>-end-btn"
+                                                    class="btn btn-sm btn-outline-danger float-end endBtn mx-2"
                                                     data-bs-toggle="modal" data-bs-target="#endModal"
                                                     value="<%= tournament.name %>"
                                                     onclick="endTournament(this)">End</button>
+                                                <button type="button" id="<%= tournament.name %>-view-btn"
+                                                    class="btn btn-sm btn-outline-primary float-end mx-2"
+                                                    value="<%= tournament.name %>">View</button>
                                             </li>
                                             <% }) %>
                                     </ul>
@@ -42,10 +45,13 @@
                                                     <%= team.teamName %>
                                                 </span>
                                                 <button type="button" id="<%= team.teamName %>-btn"
-                                                    class="btn btn-outline-danger float-end deleteBtn"
+                                                    class="btn btn-sm btn-outline-danger float-end deleteBtn mx-2"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
                                                     value="<%= team.teamName %>"
                                                     onclick="deleteTeam(this)">Delete</button>
+                                                <button type="button" id="<%= team.teamName %>-btn"
+                                                    class="btn btn-sm btn-outline-primary float-end mx-2"
+                                                    value="<%= team.teamName %>">View Tournament</button>
                                             </li>
                                             <% }) %>
                                     </ul>
@@ -55,45 +61,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- sets team name for modal delete confirmation popup and for form input value -->
-            <script type="text/javascript">
-                function endTournament(element) {
-                    var name = element.value;
-                    $('#confirm-end-msg').html(`Are you sure you want to end tournament <span class="text-danger">${name}</span>? This action cannot be undone.`);
-                    $('#modal-tournamentName').val(name);
-                }
-
-                function deleteTeam(element) {
-                    var name = element.value;
-                    $('#confirm-delete-msg').html(`Are you sure you want to delete team <span class="text-danger">${name}</span>? This action cannot be undone.`);
-                    $('#modal-teamName').val(name);
-                }
-            </script>
-            <script>
-                $(function () {
-                    $('a[data-bs-toggle="list"]').on('show.bs.tab', function (e) {
-                        localStorage.setItem('activeTab', $(e.target).attr('href'));
-                    });
-                    var activeTab = localStorage.getItem('activeTab')
-                    if (activeTab) {
-                        $(`a[href="${activeTab}"]`).tab('show');
-                    }
-                    
-                });
-            </script>
-
-            <!-- filters teams based on term in search bar -->
-            <script type="text/javascript">
-                $(function () {
-                    $('#search').on('keyup', function () {
-                        var searchTerm = $(this).val().toLowerCase();
-                        $('.team-listItem,.tournament-listItem').filter(function () {
-                            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
-                        });
-                    });
-                });
-            </script>
 
             <!-- Delete Team Form -->
             <form action="/delete-team" method="post">
@@ -149,6 +116,44 @@
                 </div>
             </form>
 
+            <!-- sets team name for modal delete confirmation popup and for form input value -->
+            <script type="text/javascript">
+                function endTournament(element) {
+                    var name = element.value;
+                    $('#confirm-end-msg').html(`Are you sure you want to end tournament <span class="text-danger">${name}</span>? This action cannot be undone.`);
+                    $('#modal-tournamentName').val(name);
+                }
+
+                function deleteTeam(element) {
+                    var name = element.value;
+                    $('#confirm-delete-msg').html(`Are you sure you want to delete team <span class="text-danger">${name}</span>? This action cannot be undone.`);
+                    $('#modal-teamName').val(name);
+                }
+            </script>
+            <script>
+                $(function () {
+                    $('a[data-bs-toggle="list"]').on('show.bs.tab', function (e) {
+                        localStorage.setItem('activeTab', $(e.target).attr('href'));
+                    });
+                    var activeTab = localStorage.getItem('activeTab')
+                    if (activeTab) {
+                        $(`a[href="${activeTab}"]`).tab('show');
+                    }
+
+                });
+            </script>
+
+            <!-- filters teams based on term in search bar -->
+            <script type="text/javascript">
+                $(function () {
+                    $('#search').on('keyup', function () {
+                        var searchTerm = $(this).val().toLowerCase();
+                        $('.team-listItem,.tournament-listItem').filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
+                        });
+                    });
+                });
+            </script>
 
             <link rel="stylesheet" href="/stylesheets/admin.css">
         </body>
