@@ -74,7 +74,10 @@ router.get('/logout', function(req, res, next) {
 router.get('/admin', function(req, res) {
     User.find({ role:"team"}, function (err, teams) {
         if(err) console.log(err)
-        res.render('admin', {"teams": teams})
+        Tournament.find({ }, function(err, tournaments) {
+            if(err) console.log(err)
+            res.render('admin', {"teams": teams, "tournaments": tournaments})
+        })
     })
 })
 
@@ -98,9 +101,15 @@ router.get('/organizer', function(req, res) {
     }
 })
 
-router.post('/admin', function(req, res) {
+router.post('/delete-team', function(req, res) {
     var teamName = req.body.teamName;
     User.collection.deleteOne({ teamName: teamName });
+    res.redirect('/admin');
+})
+
+router.post('/end-tournament', function(req, res) {
+    var tournamentName = req.body.name;
+    User.collection.deleteOne({ name: tournamentName });
     res.redirect('/admin');
 })
 
