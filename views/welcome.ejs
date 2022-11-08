@@ -14,9 +14,11 @@
                         you deserve the number one spot.
                     </p>
 
-                    <% if(currentUser){ %>
+                    <% if(currentUser) { if(currentUser.role == 'team'){ %>
                     <a href="/tournaments" class="btn btn-primary btn-lg">Join</a>
                     <% } else { %>
+                    <a href="/tournaments" class="btn btn-primary btn-lg">Sign Up</a>
+                    <% }} else { %>
                     <a href="/tournaments" class="btn btn-primary btn-lg">Sign Up</a>
                     <% } %>
 
@@ -50,7 +52,13 @@
                                 for all participants. Carefully consider the necessities of all parties before creating
                                 a tournament.
                             </p>
-                            <a href="/organizer" class="btn btn-primary">Create Tournament</a>
+                            <% if(currentUser) { if(currentUser.role == 'organizer'){ %>
+                                <a href="/organizer" class="btn btn-primary">View Tournament</a>
+                                <% } else { %>
+                                <a href="/organizer" class="btn btn-primary">Create Tournament</a>
+                                <% }} else { %>
+                                <a href="/organizer" class="btn btn-primary">Create Tournament</a>
+                                <% } %>
                         </div>
                     </div>
                 </div>
