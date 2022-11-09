@@ -134,7 +134,8 @@ router.post('/delete-team', function (req, res) {
 })
 
 router.post('/end-tournament', function (req, res) {
-    var tournamentName = req.body.name;
+    var tournamentName = req.body.tournamentName;
+    console.log(tournamentName)
     Tournament.collection.deleteOne({ name: tournamentName });
     res.redirect('/admin');
 })
