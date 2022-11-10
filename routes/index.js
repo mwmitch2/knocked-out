@@ -7,6 +7,7 @@ let Organizer = require('../models/organizer')
 let Tournament = require('../models/tournament')
 const { render } = require('ejs')
 let roles = require('../roles')
+const { deleteOne } = require('../models/user')
 
 // GET: root
 router.get('/', function (req, res) {
@@ -62,7 +63,7 @@ router.get('/login', function (req, res) {
 router.post('/login', passport.authenticate('local'), function (req, res) {
     if (req.isAuthenticated()) {
         if (req.user.role == roles.ORGANIZER) {
-            res.redirect('/organizer')
+            res.redirect('/tournaments')
         }
         else if (req.user.role == roles.TEAM) {
             res.redirect('/tournaments')
@@ -102,18 +103,15 @@ router.get('/admin', function (req, res) {
 
 })
 
-router.get('/organizer', function (req, res) {
+router.post('/organizer', function (req, res) {
     if (req.isAuthenticated()) {
         if (req.user.role == roles.ORGANIZER) {
             // Search for a tournament created by this organizer
-            let author = {
-                id: req.user._id,
-                username: req.user.username
-            }
-            Tournament.findOne({ author }).populate('teams').exec(function (err, tournament) {
+            Tournament.findOne({ "name": req.body.tournamentName }).populate('teams').exec(function (err, tournament) {
                 if (err) {
                     console.log(err)
                 } else {
+                    console.log(req.body.tournamentName)
                     // Return tournament created by this organizer
                     res.render('organizer', { 'tournament': tournament })
                 }
@@ -127,16 +125,47 @@ router.get('/organizer', function (req, res) {
     }
 })
 
+router.get('/organizer/create', function (req, res) {
+    if (req.isAuthenticated()) {
+        if (req.user.role == roles.ORGANIZER) {
+            res.render('organizer', { 'tournament': "" })
+        } else {
+            res.render('login')
+        }
+    }
+    else {
+        res.render('login')
+    }
+})
+
 router.post('/delete-team', function (req, res) {
-    var teamName = req.body.teamName;
-    User.collection.deleteOne({ teamName: teamName, role: "team" });
+    var teamId = req.body.teamId;
+    Tournament.findOneAndUpdate({ teams: teamId }, { $pull: { teams: teamId } }, (err) => {
+        if (err) console.log(err)
+        User.deleteOne({ _id: teamId }, (err) => {
+            if (err) console.log(err)
+        })
+    })
+    // User.findByIdAndDelete(teamId, (err) => {
+    //     if(err) console.log(err)
+    // });
     res.redirect('/admin');
 })
 
 router.post('/end-tournament', function (req, res) {
-    var tournamentName = req.body.tournamentName;
-    console.log(tournamentName)
-    Tournament.collection.deleteOne({ name: tournamentName });
+    var tournamentId = req.body.tournamentId;
+    Tournament.findById(tournamentId, function (err, tournament) {
+        if (err) console.log(err)
+        tournament.teams.forEach(team => {
+            User.findByIdAndDelete(team.valueOf(), (err) => {
+                if (err) console.log(err)
+            })
+        });
+        Tournament.deleteOne({ '_id': tournamentId }, (err) => {
+            if (err) console.log(err)
+        })
+    })
+
     res.redirect('/admin');
 })
 

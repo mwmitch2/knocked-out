@@ -8,9 +8,9 @@
                         <div class="col-2 mt-5">
                             <!-- List group -->
                             <div class="list-group" id="tab-list" role="tablist">
-                                <a class="list-group-item list-group-item-action" data-bs-toggle="list"
+                                <a class="list-group-item list-group-item-action" draggable="false" data-bs-toggle="list"
                                     href="#tournament" role="tab" id="tournament-tab">Tournaments</a>
-                                <a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#team"
+                                <a class="list-group-item list-group-item-action" draggable="false" data-bs-toggle="list" href="#team"
                                     role="tab" id="team-tab">Teams</a>
                             </div>
                         </div>
@@ -28,11 +28,11 @@
                                                 <button type="button" id="<%= tournament.name %>-end-btn"
                                                     class="btn btn-sm btn-outline-danger float-end endBtn mx-2"
                                                     data-bs-toggle="modal" data-bs-target="#endModal"
-                                                    value="<%= tournament.name %>"
+                                                    value="<%= tournament._id %>"
                                                     onclick="endTournament(this)">End</button>
                                                 <button type="button" id="<%= tournament.name %>-view-btn"
                                                     class="btn btn-sm btn-outline-primary float-end mx-2"
-                                                    value="<%= tournament.name %>">View</button>
+                                                    value="<%= tournament._id %>">View</button>
                                             </li>
                                             <% }) %>
                                     </ul>
@@ -47,11 +47,11 @@
                                                 <button type="button" id="<%= team.teamName %>-btn"
                                                     class="btn btn-sm btn-outline-danger float-end deleteBtn mx-2"
                                                     data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                    value="<%= team.teamName %>"
+                                                    value="<%=team._id%>"
                                                     onclick="deleteTeam(this)">Delete</button>
                                                 <button type="button" id="<%= team.teamName %>-btn"
                                                     class="btn btn-sm btn-outline-primary float-end mx-2"
-                                                    value="<%= team.teamName %>">View Tournament</button>
+                                                    value="<%=team._id%>">View Tournament</button>
                                             </li>
                                             <% }) %>
                                     </ul>
@@ -80,7 +80,7 @@
                                 </h8>
                             </div>
                             <div class="modal-footer">
-                                <input type="hidden" id="modal-teamName" name="teamName" value="">
+                                <input type="hidden" id="modal-teamId" name="teamId" value="">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-danger" id="delete-confirm-btn">Delete</button>
                             </div>
@@ -107,7 +107,7 @@
                                 </h8>
                             </div>
                             <div class="modal-footer">
-                                <input type="hidden" id="modal-tournamentName" name="tournamentName" value="">
+                                <input type="hidden" id="modal-tournamentId" name="tournamentId" value="">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="submit" class="btn btn-danger" id="end-confirm-btn">End</button>
                             </div>
@@ -119,15 +119,17 @@
             <!-- sets team name for modal delete confirmation popup and for form input value -->
             <script type="text/javascript">
                 function endTournament(element) {
-                    var name = element.value;
+                    var name = element.name
+                    var tournamentId = element.value
                     $('#confirm-end-msg').html(`Are you sure you want to end tournament <span class="text-danger">${name}</span>? This action cannot be undone.`);
-                    $('#modal-tournamentName').val(name);
+                    $('#modal-tournamentId').val(tournamentId);
                 }
 
                 function deleteTeam(element) {
-                    var name = element.value;
+                    var name = element.name
+                    var teamId = element.value
                     $('#confirm-delete-msg').html(`Are you sure you want to delete team <span class="text-danger">${name}</span>? This action cannot be undone.`);
-                    $('#modal-teamName').val(name);
+                    $('#modal-teamId').val(teamId);
                 }
             </script>
             <script>

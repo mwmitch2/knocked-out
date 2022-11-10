@@ -11,7 +11,13 @@ router.get('/', function (req, res) {
             Tournament.find({}, function (err, tournaments) {
                 res.render('tournaments/index', { tournaments: tournaments })
             })
-        } else {
+        } else if (req.user.role == roles.ORGANIZER) {
+            // Get tournaments that the organizer has created
+            Tournament.find({ "author.username": req.user.username }, (err, tournaments) => {
+                res.render("tournaments/index", { tournaments: tournaments })
+            })
+        }
+        else {
             res.render('login')
         }
     }
@@ -37,7 +43,7 @@ router.post('/new', function (req, res) {
         if (err) {
             console.log(err)
         } else {
-            res.redirect('/tournaments')
+            res.render('organizer', { 'tournament': newlyCreated })
         }
     })
 })

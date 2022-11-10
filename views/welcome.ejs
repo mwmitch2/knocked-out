@@ -53,11 +53,11 @@
                                 a tournament.
                             </p>
                             <% if(currentUser) { if(currentUser.role == 'organizer'){ %>
-                                <a href="/organizer" class="btn btn-primary">View Tournament</a>
+                                <a href="/tournaments" class="btn btn-primary">View Tournaments</a>
+                                <% } %>
+                                <a href="/organizer/create" class="btn btn-primary">Create Tournament</a>
                                 <% } else { %>
-                                <a href="/organizer" class="btn btn-primary">Create Tournament</a>
-                                <% }} else { %>
-                                <a href="/organizer" class="btn btn-primary">Create Tournament</a>
+                                <a href="/organizer/create" class="btn btn-primary">Create Tournament</a>
                                 <% } %>
                         </div>
                     </div>
