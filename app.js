@@ -12,9 +12,13 @@ var express     = require("express"),
 // configure dotenv
 require('dotenv').config();
 
+const {errorHandler} = require('./middleware/errorMiddleware')
+
 //requiring routes
 let indexRoutes = require("./routes/index")
-let tournamentRoutes = require('./routes/tournaments')    
+let tournamentRoutes = require('./routes/tournaments')
+let organizerRoutes = require('./routes/organizer');    
+const organizer = require("./models/organizer");
 
 // assign mongoose promise library and connect to database
 mongoose.Promise = global.Promise;
@@ -60,9 +64,14 @@ app.use(function(req, res, next){
    next();
 });
 
+app.use(express.json())
+app.use(express.urlencoded( {extended: false} ))
 
 app.use("/", indexRoutes);
 app.use('/tournaments', tournamentRoutes)
+app.use('/api/tourneys', organizerRoutes)
+
+app.use(errorHandler)
 
 app.listen(process.env.PORT, function(){
    console.log("Knocked Out App is Running!");
