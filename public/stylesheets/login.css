@@ -1,7 +1,6 @@
-.err-message {
-    background-color: rgb(223, 77, 77);
+.message {
     border-radius: 50px;
-    width:fit-content;
+    width: fit-content;
     margin: 10px auto;
     padding: 2px 20px;
     text-align: center;

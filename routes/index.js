@@ -74,7 +74,7 @@ router.post('/login', passport.authenticate('local'), userAuth.checkLoggedIn, (r
 router.get('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) { return next(err) }
-        res.redirect('/')
+        res.render('login', { message: "You logged out successfully", color: "rgb(15, 197, 70)" })
     })
 })
 

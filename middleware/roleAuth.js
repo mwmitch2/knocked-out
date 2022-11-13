@@ -6,7 +6,7 @@ isTeam = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login', { errMessage: "Access Denied" });
+    res.status(403).render('login', { message: "Access Denied", color: "rgb(223, 77, 77)" });
     return;
 }
 
@@ -15,7 +15,7 @@ isOrganizer = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login', { errMessage: "Access Denied" });
+    res.status(403).render('login', { message: "Access Denied", color: "rgb(223, 77, 77)" });
     return;
 }
 
@@ -24,7 +24,7 @@ isAdmin = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login', { errMessage: "Access Denied" });
+    res.status(403).render('login', { message: "Access Denied", color: "rgb(223, 77, 77)" });
     return;
 }
 
@@ -33,7 +33,7 @@ isTeamOrOrganizer = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login', { errMessage: "Access Denied" });
+    res.status(403).render('login', { message: "Access Denied", color: "rgb(223, 77, 77)" });
     return;
 }
 

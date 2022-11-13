@@ -4,9 +4,9 @@
     <div class="row">
         <h2 style="text-align: center">Login</h2>
         <div style="width: 30%; margin: 25px auto;">
-            <% if(typeof(errMessage) != "undefined") { %>
-            <div class="err-message">
-                <h7><%= errMessage %></h7>
+            <% if(typeof(message) != "undefined") { %>
+            <div class="message" style="background-color:<%= color %>">
+                <h7><%= message %></h7>
             </div>
             <% } %>
             <form action="/login" method="post">
