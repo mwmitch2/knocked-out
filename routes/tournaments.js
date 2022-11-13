@@ -43,7 +43,7 @@ router.post('/new', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, res) => 
 })
 
 // SHOW - shows more info about one tournament
-router.get("/:id", userAuth.checkLoggedIn, roleAuth.isTeamOrOrganizer, (req, res) => {
+router.get("/:id", userAuth.checkLoggedIn, roleAuth.isTeam, (req, res) => {
     // find the tournament with provided ID
     Tournament.findById(req.params.id).populate('teams').exec((err, foundTournament) => {
         if (err || !foundTournament) {
