@@ -50,10 +50,8 @@
                                 for all participants. Carefully consider the necessities of all parties before creating
                                 a tournament.
                             </p>
-                            <% if(user) { if(user.role == 'organizer'){ %>
+                            <% if(currentUser && currentUser.role == 'organizer'){ %>
                                 <a href="/tournaments" class="btn btn-primary">View Tournaments</a>
-                                <% } %>
-                                <a href="/organizer/create" class="btn btn-primary">Create Tournament</a>
                                 <% } else { %>
                                 <a href="/organizer/create" class="btn btn-primary">Create Tournament</a>
                                 <% } %>

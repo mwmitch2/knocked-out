@@ -2,7 +2,6 @@ const roles = require("../roles")
 
 isTeam = (req, res, next) => {
     if(req.user.role === roles.TEAM) {
-        console.log('team authorized')
         next();
         return;
     }

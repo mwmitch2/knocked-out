@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
             }
 
             passport.authenticate('local')(req, res, () => {
-                res.redirect('/')
+                res.redirect('/tournaments')
             })
         })
     } else if (req.body.role == 'team') {
@@ -48,7 +48,7 @@ router.post('/register', (req, res) => {
             }
 
             passport.authenticate('local')(req, res, () => {
-                res.redirect('/')
+                res.redirect('/tournaments')
             })
         })
     }
