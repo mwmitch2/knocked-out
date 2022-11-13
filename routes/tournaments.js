@@ -2,32 +2,26 @@ let express = require('express')
 let router = express.Router()
 let Tournament = require('../models/tournament')
 let roles = require('../roles')
+const userAuth = require('../middleware/userAuth')
+const roleAuth = require('../middleware/roleAuth')
 
 // Tournaments page - display all
-router.get('/', function (req, res) {
-    if (req.isAuthenticated()) {
-        if (req.user.role == roles.TEAM) {
-            // Get all tournaments and send data to the view
-            Tournament.find({}, function (err, tournaments) {
-                res.render('tournaments/index', { tournaments: tournaments })
-            })
-        } else if (req.user.role == roles.ORGANIZER) {
-            // Get tournaments that the organizer has created
-            Tournament.find({ "author.username": req.user.username }, (err, tournaments) => {
-                res.render("tournaments/index", { tournaments: tournaments })
-            })
-        }
-        else {
-            res.render('login')
-        }
-    }
-    else {
-        res.render('login')
+router.get('/', userAuth.checkLoggedIn, roleAuth.isTeamOrOrganizer, (req, res) => {
+    if (req.user.role === roles.TEAM) {
+        // Get all tournaments and send data to the view
+        Tournament.find({}, (err, tournaments) => {
+            res.render('tournaments/index', { tournaments: tournaments })
+        })
+    } else if (req.user.role === roles.ORGANIZER) {
+        // Get tournaments that the organizer has created
+        Tournament.find({ "author.username": req.user.username }, (err, tournaments) => {
+            res.render("tournaments/index", { tournaments: tournaments })
+        })
     }
 })
 
 // Handle POST request to create new tournament
-router.post('/new', function (req, res) {
+router.post('/new', (req, res) => {
     // get data from form and add to tournament array
     let name = req.body.name;
     let size = req.body.size;
@@ -39,7 +33,7 @@ router.post('/new', function (req, res) {
 
     let newTournament = { name: name, size: size, type: type, author: author }
 
-    Tournament.create(newTournament, function (err, newlyCreated) {
+    Tournament.create(newTournament, (err, newlyCreated) => {
         if (err) {
             console.log(err)
         } else {
@@ -49,9 +43,9 @@ router.post('/new', function (req, res) {
 })
 
 // SHOW - shows more info about one tournament
-router.get("/:id", function (req, res) {
+router.get("/:id", (req, res) => {
     // find the tournament with provided ID
-    Tournament.findById(req.params.id).populate('teams').exec(function (err, foundTournament) {
+    Tournament.findById(req.params.id).populate('teams').exec((err, foundTournament) => {
         if (err || !foundTournament) {
             console.log(err);
             return res.redirect('/tournaments');
@@ -63,9 +57,9 @@ router.get("/:id", function (req, res) {
 });
 
 // Handle POST for team joining a tournament
-router.post("/:id", function (req, res) {
+router.post("/:id", (req, res) => {
     // lookup tournament using ID
-    Tournament.findById(req.params.id, function (err, tournament) {
+    Tournament.findById(req.params.id, (err, tournament) => {
         if (err) {
             console.log(err);
             res.redirect('/tournaments' + tournament._id);
