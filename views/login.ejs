@@ -4,6 +4,11 @@
     <div class="row">
         <h2 style="text-align: center">Login</h2>
         <div style="width: 30%; margin: 25px auto;">
+            <% if(typeof(errMessage) != "undefined") { %>
+            <div class="err-message">
+                <h7><%= errMessage %></h7>
+            </div>
+            <% } %>
             <form action="/login" method="post">
                 <div class="form-group mb-4">
                     <input class="form-control" type="text" name="username" placeholder="username">
@@ -19,6 +24,8 @@
             <div class="signup-section">Not a member yet? <a href="/register" class="text-info">Sign Up</a></div>
         </div>
     </div>
+
+    <link rel="stylesheet" href="/stylesheets/login.css">
 </body>
 
 <%- include('./partials/footer') %>

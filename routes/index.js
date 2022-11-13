@@ -98,7 +98,6 @@ router.post('/organizer', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, re
         if (err) {
             console.log(err)
         } else {
-            console.log(req.body.tournamentName)
             // Return tournament created by this organizer
             res.render('organizer', { tournament: tournament })
         }
@@ -107,8 +106,6 @@ router.post('/organizer', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, re
 
 router.get('/organizer/create', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, res) => {
     res.render('organizer', { tournament: "" })
-
-
 })
 
 router.post('/delete-team', (req, res) => {

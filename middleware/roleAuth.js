@@ -6,7 +6,7 @@ isTeam = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login');
+    res.status(403).render('login', { errMessage: "Access Denied" });
     return;
 }
 
@@ -15,7 +15,7 @@ isOrganizer = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login');
+    res.status(403).render('login', { errMessage: "Access Denied" });
     return;
 }
 
@@ -24,7 +24,7 @@ isAdmin = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login');
+    res.status(403).render('login', { errMessage: "Access Denied" });
     return;
 }
 
@@ -33,7 +33,7 @@ isTeamOrOrganizer = (req, res, next) => {
         next();
         return;
     }
-    res.status(403).render('login');
+    res.status(403).render('login', { errMessage: "Access Denied" });
     return;
 }
 
