@@ -5,7 +5,7 @@ checkLoggedIn = (req, res, next) => {
         return;
     }
 
-    res.status(403).render('login', { message: "You are not loged in", color: "rgb(223, 77, 77)" });
+    res.status(403).render('login', { message: "You are not logged in", color: "rgb(223, 77, 77)" });
     return;
 }
 
