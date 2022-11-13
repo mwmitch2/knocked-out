@@ -5,15 +5,13 @@ let passport = require('passport')
 let User = require('../models/user')
 let Organizer = require('../models/organizer')
 let Tournament = require('../models/tournament')
-const { render } = require('ejs')
 let roles = require('../roles')
-const { deleteOne } = require('../models/user')
 const userAuth = require('../middleware/userAuth')
 const roleAuth = require('../middleware/roleAuth')
 
 // GET: root
 router.get('/', (req, res) => {
-    res.render('welcome')
+    res.render('welcome', { user: req.user })
 })
 
 // Register Page
@@ -82,10 +80,14 @@ router.get('/logout', (req, res, next) => {
 
 router.get('/admin', userAuth.checkLoggedIn, roleAuth.isAdmin, (req, res) => {
     User.find({ role: roles.TEAM }, (err, teams) => {
-        if (err) console.log(err)
+        if (err) {
+            console.log(err)
+            return;
+        }
+
         Tournament.find({}, (err, tournaments) => {
             if (err) console.log(err)
-            res.render('admin', { "teams": teams, "tournaments": tournaments })
+            res.render('admin', { teams: teams, tournaments: tournaments })
         })
     })
 })
@@ -98,13 +100,13 @@ router.post('/organizer', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, re
         } else {
             console.log(req.body.tournamentName)
             // Return tournament created by this organizer
-            res.render('organizer', { 'tournament': tournament })
+            res.render('organizer', { tournament: tournament })
         }
     })
 })
 
 router.get('/organizer/create', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, res) => {
-    res.render('organizer', { 'tournament': "" })
+    res.render('organizer', { tournament: "" })
 
 
 })

@@ -5,7 +5,8 @@ checkLoggedIn = (req, res, next) => {
         return;
     }
 
-    res.status(403).send({ message: "You are not logged in" })
+    res.status(403).render('login');
+    return;
 }
 
 module.exports = {

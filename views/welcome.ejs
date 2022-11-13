@@ -14,12 +14,10 @@
                         you deserve the number one spot.
                     </p>
 
-                    <% if(currentUser) { if(currentUser.role == 'team'){ %>
+                    <% if(currentUser && currentUser.role === 'team'){ %>
                     <a href="/tournaments" class="btn btn-primary btn-lg">Join</a>
                     <% } else { %>
-                    <a href="/tournaments" class="btn btn-primary btn-lg">Sign Up</a>
-                    <% }} else { %>
-                    <a href="/tournaments" class="btn btn-primary btn-lg">Sign Up</a>
+                    <a href="/register" class="btn btn-primary btn-lg">Sign Up</a>
                     <% } %>
 
                 </div>
@@ -52,7 +50,7 @@
                                 for all participants. Carefully consider the necessities of all parties before creating
                                 a tournament.
                             </p>
-                            <% if(currentUser) { if(currentUser.role == 'organizer'){ %>
+                            <% if(user) { if(user.role == 'organizer'){ %>
                                 <a href="/tournaments" class="btn btn-primary">View Tournaments</a>
                                 <% } %>
                                 <a href="/organizer/create" class="btn btn-primary">Create Tournament</a>

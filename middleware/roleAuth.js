@@ -12,7 +12,6 @@ isTeam = (req, res, next) => {
 
 isOrganizer = (req, res, next) => {
     if(req.user.role === roles.ORGANIZER) {
-        console.log('organizer authorized')
         next();
         return;
     }
