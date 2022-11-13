@@ -1,8 +1,4 @@
 
-.list-group li {
-    margin-bottom: 12px;
-}
-
 body {
     background: #eee;
 }
@@ -15,9 +11,10 @@ body {
     text-align: center;
 }
 
-.btn.focus, .btn:focus {
+.btn.focus,
+.btn:focus {
     outline: 0;
-    box-shadow: none!important;
+    box-shadow: none !important;
 }
 
 #tab-list {
