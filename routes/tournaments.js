@@ -8,7 +8,7 @@ const roleAuth = require('../middleware/roleAuth')
 // Tournaments page - display all
 router.get('/', userAuth.checkLoggedIn, roleAuth.isTeamOrOrganizer, (req, res) => {
     if (req.user.role === roles.TEAM) {
-        Tournament.findOne({ teams: req.user._id }).exec((err, tournament) => {
+        Tournament.findOne({ teams: req.user._id }).populate("teams").exec((err, tournament) => {
             if (err) throw err;
             if (tournament) {
                 res.render('tournamentView', { tournament: tournament });
