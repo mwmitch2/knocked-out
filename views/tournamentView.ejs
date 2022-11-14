@@ -1,0 +1,55 @@
+<%- include('./partials/head') %>
+<%- include('./partials/header') %>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/jquery.bracket.min.css" />
+
+<body>
+    <% if (typeof tournament=='object' && tournament) { %>
+    <section id="start" class="p-5 bg-dark text-light">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-md p-5">
+                    <p class="p-lead">
+                        The tournament has not started yet. Please wait for the organizer to start the tournament.
+                    </p>
+                    <div class="progress" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar"
+                            aria-label="Danger striped example" style="width: 100%" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">8/8</div>
+                    </div>
+                </div>
+                <div class="col-md">
+
+                    <!-- Display if teams have joined -->
+                    <% if (tournament.teams.length > 0)  { %>
+                    <h2>Teams</h2>
+
+                    <table class="table table-dark table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Team Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% let i = 1; tournament.teams.forEach(function(team) { %>
+                            <tr>
+                                <th scope="row"><%= i %></th>
+                                <td><%= team.teamName %></td>
+                            </tr>
+                            <% i++; }) %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <h2>No Team Has Joined Yet.</h2>
+                    <% } %>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <% } %>
+</body>
+
+<%- include('./partials/footer') %>

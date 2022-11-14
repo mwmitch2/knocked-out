@@ -8,9 +8,16 @@ const roleAuth = require('../middleware/roleAuth')
 // Tournaments page - display all
 router.get('/', userAuth.checkLoggedIn, roleAuth.isTeamOrOrganizer, (req, res) => {
     if (req.user.role === roles.TEAM) {
-        // Get all tournaments and send data to the view
-        Tournament.find({}, (err, tournaments) => {
-            res.render('tournaments/index', { tournaments: tournaments })
+        Tournament.findOne({ teams: req.user._id }).exec((err, tournament) => {
+            if (err) throw err;
+            if (tournament) {
+                res.render('tournamentView', { tournament: tournament });
+            } else {
+                // Get all tournaments and send data to the view
+                Tournament.find({ full: false }, (err, tournaments) => {
+                    res.render('tournaments/index', { tournaments: tournaments })
+                })
+            }
         })
     } else if (req.user.role === roles.ORGANIZER) {
         // Get tournaments that the organizer has created
@@ -37,7 +44,7 @@ router.post('/new', userAuth.checkLoggedIn, roleAuth.isOrganizer, (req, res) => 
         if (err) {
             console.log(err)
         } else {
-            res.render('organizer', { 'tournament': newlyCreated })
+            res.render('organizer', { tournament: newlyCreated })
         }
     })
 })
@@ -59,16 +66,22 @@ router.get("/:id", userAuth.checkLoggedIn, roleAuth.isTeam, (req, res) => {
 // Handle POST for team joining a tournament
 router.post("/:id", userAuth.checkLoggedIn, roleAuth.isTeam, (req, res) => {
     // lookup tournament using ID
-    Tournament.findById(req.params.id, (err, tournament) => {
-        if (err) {
-            console.log(err);
-            res.redirect('/tournaments' + tournament._id);
-        } else {
-            // addToSet() makes sure it is unique
-            tournament.teams.addToSet(req.user)
-            tournament.save()
-            res.redirect('/tournaments/' + tournament._id)
+    Tournament.findOne({ _id: req.params.id }).exec((err, tournament) => {
+        if (err) throw err
+
+        if (tournament.full) {
+            res.status(403).send({ message: "tournament is full" });
+            return;
         }
+
+        tournament.teams.addToSet(req.user)
+
+        if (tournament.teams.length == tournament.size) {
+            tournament.full = true;
+        }
+
+        tournament.save()
+        res.redirect('/tournaments/' + tournament._id)
     })
 })
 

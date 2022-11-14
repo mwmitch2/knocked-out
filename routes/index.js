@@ -71,11 +71,8 @@ router.post('/login', passport.authenticate('local'), userAuth.checkLoggedIn, (r
 })
 
 // Handle logout
-router.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) { return next(err) }
-        res.render('login', { message: "You logged out successfully", color: "rgb(15, 197, 70)" })
-    })
+router.get('/logout', userAuth.logout, (req, res) => {
+    res.render('login', { message: "You logged out successfully", color: "rgb(15, 197, 70)" })
 })
 
 router.get('/admin', userAuth.checkLoggedIn, roleAuth.isAdmin, (req, res) => {
@@ -125,7 +122,10 @@ router.post('/delete-team', (req, res) => {
 router.post('/end-tournament', (req, res) => {
     var tournamentId = req.body.tournamentId;
     Tournament.findById(tournamentId, (err, tournament) => {
-        if (err) console.log(err)
+        if (err) {
+            console.log(err)
+            return;
+        }
         tournament.teams.forEach(team => {
             User.findByIdAndDelete(team.valueOf(), (err) => {
                 if (err) console.log(err)

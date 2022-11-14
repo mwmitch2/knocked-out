@@ -9,6 +9,17 @@ checkLoggedIn = (req, res, next) => {
     return;
 }
 
+logout = (req, res, next) => {
+    req.logout((err) => {
+        if(err) {
+            res.status(403).send({ message: "error logging out" });
+            return;
+        }
+        next();
+    })
+}
+
 module.exports = {
-    checkLoggedIn
+    checkLoggedIn,
+    logout
 }
