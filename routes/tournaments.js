@@ -81,7 +81,7 @@ router.post("/:id", userAuth.checkLoggedIn, roleAuth.isTeam, (req, res) => {
         }
 
         tournament.save()
-        res.redirect('/tournaments/' + tournament._id)
+        res.render('tournamentView', { tournament: tournament })
     })
 })
 
