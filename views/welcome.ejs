@@ -85,4 +85,57 @@
 </body>
 
 
+<div class="container">
+
+    <hr class="my-4" />
+    <div id="thought"></div>
+    <div class="row">
+
+
+    </div>
+    <div class="container mt-6">
+
+        <input id="countnum" type="hidden" />
+        <button class="btn btn-outline-primary btn-lg" role="button" id="nextthought">
+            New Quote
+        </button>
+    </div>
+</div>
+</div>
+
 <%- include('./partials/footer') %>
+<script>let url = "https://type.fit/api/quotes";
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let a = 0;
+
+            let nextthought = document.getElementById("nextthought");
+            nextthought.addEventListener("click", function () {
+                let countnum = document.getElementById("countnum");
+
+                countnum.value = ++a;
+
+                displaythought(countnum.value, data);
+            });
+
+            displaythought(0, data);
+        });
+
+    function displaythought(index, data) {
+        let thought = document.getElementById("thought");
+
+        if (data[index].author == null) {
+            data[index].author = "unknown";
+        }
+
+        let htmlthought = `<div class="alert alert-outline-primary">
+                ${data[index].text}<br>
+                <span style="color:#00ffc5;">
+                    ${data[index].author}
+                </span>
+            </div>`;
+        thought.innerHTML = htmlthought;
+    }</script>

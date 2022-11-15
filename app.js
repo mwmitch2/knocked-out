@@ -61,7 +61,6 @@ const {errorHandler} = require('./middleware/errorMiddleware')
 //requiring routes
 let indexRoutes = require("./routes/index");
 let tournamentRoutes = require('./routes/tournaments')
-let organizerRoutes = require('./routes/organizer');    
 const { $where } = require("./models/user");
 
 // assign mongoose promise library and connect to database
@@ -113,7 +112,6 @@ app.use(express.urlencoded( {extended: false} ))
 
 app.use("/", indexRoutes);
 app.use('/tournaments', tournamentRoutes)
-app.use('/api/tourneys', organizerRoutes)
 
 app.use(errorHandler)
 
