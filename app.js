@@ -1,5 +1,7 @@
 var express     = require("express"),
     app         = express(),
+    http        = require('http'),
+    server      = http.createServer(app),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     passport    = require("passport"),
@@ -9,16 +11,33 @@ var express     = require("express"),
     User        = require("./models/user"),
     session = require("express-session"),
     methodOverride = require("method-override");
+const io = require('socket.io')(server)
+const Tournament = require("./models/tournament");
+
+io.sockets.on('connection', (socket => {
+    socket.on('join', (room) => {
+        socket.join(room);
+    })
+}))
+
+changeStream = Tournament.watch();
+changeStream.on('change', (changeEvent) => {
+    Tournament.findOne({ _id: changeEvent.documentKey }).populate('teams').exec((err, tournament) => {
+        if(err) throw err
+        io.to(`${tournament.name}`).emit('databaseUpdate', tournament)
+    })
+})
+    
 // configure dotenv
 require('dotenv').config();
 
 const {errorHandler} = require('./middleware/errorMiddleware')
 
 //requiring routes
-let indexRoutes = require("./routes/index")
+let indexRoutes = require("./routes/index");
 let tournamentRoutes = require('./routes/tournaments')
 let organizerRoutes = require('./routes/organizer');    
-const organizer = require("./models/organizer");
+const { $where } = require("./models/user");
 
 // assign mongoose promise library and connect to database
 mongoose.Promise = global.Promise;
@@ -73,6 +92,8 @@ app.use('/api/tourneys', organizerRoutes)
 
 app.use(errorHandler)
 
-app.listen(process.env.PORT, function(){
+server.listen(process.env.PORT, function(){
    console.log("Knocked Out App is Running!");
 });
+
+changeStream.close();
