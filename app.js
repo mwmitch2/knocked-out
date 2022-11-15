@@ -13,6 +13,7 @@ var express     = require("express"),
     methodOverride = require("method-override");
 const io = require('socket.io')(server)
 const Tournament = require("./models/tournament");
+const Team = require("./models/user");
 
 io.sockets.on('connection', (socket => {
     socket.on('join', (room) => {
@@ -20,12 +21,36 @@ io.sockets.on('connection', (socket => {
     })
 }))
 
-changeStream = Tournament.watch();
-changeStream.on('change', (changeEvent) => {
-    Tournament.findOne({ _id: changeEvent.documentKey }).populate('teams').exec((err, tournament) => {
-        if(err) throw err
-        io.to(`${tournament.name}`).emit('databaseUpdate', tournament)
-    })
+io.sockets.on('disconnect', (socket) => {
+    socket.off('join')
+})
+
+changeStreamTournament = Tournament.watch();
+changeStreamTournament.on('change', (changeEvent) => {
+    if(changeEvent.operationType == 'update') {
+        Tournament.findOne({ _id: changeEvent.documentKey }).populate('teams').exec((err, tournament) => {
+            if(err) throw err
+            io.to(`${tournament.name}`).emit('databaseUpdate', tournament)
+
+            tournament.full = tournament.teams.length >= tournament.size;
+            tournament.save();
+        })
+    } else if(changeEvent.operationType == 'insert' || changeEvent.operationType == 'delete') {
+        Tournament.find({}).exec((err, tournaments) => {
+            if(err) throw err
+            io.to("adminTournaments").emit('tournamentsUpdate', tournaments);
+        })
+    }
+})
+
+changeStreamTeam = Team.watch();
+changeStreamTeam.on('change', (changeEvent) => {
+    if(changeEvent.operationType == 'insert' || changeEvent.operationType == 'delete') {
+        Team.find({ role: "team" }).exec((err, teams) => {
+            if(err) throw err
+            io.to("adminTeams").emit('teamsUpdate', teams);
+        })
+    }
 })
     
 // configure dotenv
@@ -96,4 +121,5 @@ server.listen(process.env.PORT, function(){
    console.log("Knocked Out App is Running!");
 });
 
-changeStream.close();
+changeStreamTournament.close();
+changeStreamTeam.close()

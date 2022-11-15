@@ -83,7 +83,7 @@ router.get('/admin', userAuth.checkLoggedIn, roleAuth.isAdmin, (req, res) => {
         }
 
         Tournament.find({}, (err, tournaments) => {
-            if (err) console.log(err)
+            if (err) throw err
             res.render('admin', { teams: teams, tournaments: tournaments })
         })
     })
@@ -108,15 +108,12 @@ router.get('/organizer/create', userAuth.checkLoggedIn, roleAuth.isOrganizer, (r
 router.post('/delete-team', (req, res) => {
     var teamId = req.body.teamId;
     Tournament.findOneAndUpdate({ teams: teamId }, { $pull: { teams: teamId } }, (err) => {
-        if (err) console.log(err)
+        if (err) throw err
         User.deleteOne({ _id: teamId }, (err) => {
-            if (err) console.log(err)
+            if (err) throw err
+            res.status(200)
         })
     })
-    // User.findByIdAndDelete(teamId, (err) => {
-    //     if(err) console.log(err)
-    // });
-    res.redirect('/admin');
 })
 
 router.post('/end-tournament', (req, res) => {
@@ -128,15 +125,14 @@ router.post('/end-tournament', (req, res) => {
         }
         tournament.teams.forEach(team => {
             User.findByIdAndDelete(team.valueOf(), (err) => {
-                if (err) console.log(err)
+                if (err) throw err
             })
         });
         Tournament.deleteOne({ '_id': tournamentId }, (err) => {
-            if (err) console.log(err)
+            if (err) throw err
+            res.status(200)
         })
     })
-
-    res.redirect('/admin');
 })
 
 module.exports = router;

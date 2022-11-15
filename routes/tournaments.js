@@ -76,10 +76,6 @@ router.post("/:id", userAuth.checkLoggedIn, roleAuth.isTeam, (req, res) => {
 
         tournament.teams.addToSet(req.user)
 
-        if (tournament.teams.length == tournament.size) {
-            tournament.full = true;
-        }
-
         tournament.save()
         res.render('tournamentView', { tournament: tournament })
     })

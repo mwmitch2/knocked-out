@@ -29,7 +29,7 @@
                             <th scope="col">Team Name</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="team-list">
                         <% let i = 1; tournament.teams.forEach(function(team) { %>
                         <tr>
                             <th scope="row"><%= i %></th>
@@ -65,4 +65,21 @@
         </div>
     </div>
 </body>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io()
+    
+    socket.emit('join', "<%= tournament.name %>")
+    socket.on('databaseUpdate', (tournament) => {
+        var i = 1;
+        var teamsHtml = "";
+        tournament.teams.forEach(team => {
+            teamsHtml +=
+            `<tr><th scope="row">${i++}</th><td>${team.teamName}</td></tr>`;
+        })
+        $('#team-list').html(teamsHtml);
+    }
+)
+</script>
 <%- include('../partials/footer') %>

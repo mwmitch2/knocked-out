@@ -5,6 +5,7 @@
             <div class="container">
                 <% if(currentUser.role=='team') { %>
                 <h2 class="text-center">Tournaments You Can Join</h2>
+                <button class="btn btn-primary" onclick="location.reload()">Refresh</button>
                 <% } else if(currentUser.role=='organizer') { %>
                 <h2 class="text-center">Your Tournaments</h2>
                 <% } %>
