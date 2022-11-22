@@ -7,14 +7,6 @@ var UserSchema = new mongoose.Schema({
     role: String
 })
 
-const tourneySchema = mongoose.Schema({
-    text: {
-        type: String,
-        required: [true, 'Please add a text value']
-    }
-})
-
 UserSchema.plugin(passportLocalMongoose)
 
 module.exports = mongoose.model('Organizer', UserSchema, 'users')
-module.exports = mongoose.model('Tourney', tourneySchema)

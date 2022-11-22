@@ -10,8 +10,8 @@
                     <div class="list-group" id="tab-list" role="tablist">
                         <a class="list-group-item list-group-item-action" draggable="false" data-bs-toggle="list"
                             href="#tournament" role="tab" id="tournament-tab">Tournaments</a>
-                        <a class="list-group-item list-group-item-action" draggable="false" data-bs-toggle="list" href="#team"
-                            role="tab" id="team-tab">Teams</a>
+                        <a class="list-group-item list-group-item-action" draggable="false" data-bs-toggle="list"
+                            href="#team" role="tab" id="team-tab">Teams</a>
                     </div>
                 </div>
                 <div class="col-8">
@@ -21,39 +21,33 @@
                         <div class="tab-pane fade show" id="tournament" role="tabpanel">
                             <ul id="tournament-list" class="list-group" id="list-container">
                                 <% tournaments.forEach(tournament => { %>
-                                    <li class="list-group-item p-3 tournament-listItem"
-                                        id="<%= tournament.name %>-listItem"><span class="middle">
-                                            <%= tournament.name %>
-                                        </span>
-                                        <button type="button" id="<%= tournament.name %>-end-btn"
-                                            class="btn btn-sm btn-outline-danger float-end endBtn mx-2"
-                                            data-bs-toggle="modal" data-bs-target="#endModal"
-                                            value="<%= tournament._id %>"
-                                            onclick="endTournament(this)">End</button>
-                                        <button type="button" id="<%= tournament.name %>-view-btn"
-                                            class="btn btn-sm btn-outline-primary float-end mx-2"
-                                            value="<%= tournament._id %>">View</button>
-                                    </li>
-                                    <% }) %>
+                                <li class="list-group-item p-3 tournament-listItem"
+                                    id="<%= tournament.name %>-listItem"><span class="middle"
+                                        name="<%= tournament.name %>">
+                                        <%= tournament.name %>
+                                    </span>
+                                    <button type="button" id="<%= tournament.name %>-end-btn"
+                                        class="btn btn-sm btn-outline-danger float-end endBtn mx-2"
+                                        data-bs-toggle="modal" data-bs-target="#endModal" value="<%= tournament._id %>"
+                                        onclick="endTournament(this)">End</button>
+                                </li>
+                                <% }) %>
                             </ul>
                         </div>
                         <div class="tab-pane fade" id="team" role="tabpanel">
                             <ul id="team-list" class="list-group" id="list-container">
                                 <% teams.forEach(team => { %>
-                                    <li class="list-group-item p-3 team-listItem"
-                                        id="<%= team.teamName %>-listItem"><span class="middle">
-                                            <%= team.teamName %>
-                                        </span>
-                                        <button type="button" id="<%= team.teamName %>-btn"
-                                            class="btn btn-sm btn-outline-danger float-end deleteBtn mx-2"
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                            value="<%=team._id%>"
-                                            onclick="deleteTeam(this)">Delete</button>
-                                        <button type="button" id="<%= team.teamName %>-btn"
-                                            class="btn btn-sm btn-outline-primary float-end mx-2"
-                                            value="<%=team._id%>">View Tournament</button>
-                                    </li>
-                                    <% }) %>
+                                <li class="list-group-item p-3 team-listItem" id="<%= team.teamName %>-listItem"><span
+                                        class="middle" name="<%= team.teamName %>">
+                                        <%= team.teamName %>
+                                    </span>
+                                    <button type="button" id="<%= team.teamName %>-btn"
+                                        class="btn btn-sm btn-outline-danger float-end deleteBtn mx-2"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal" value="<%=team._id%>"
+                                        onclick="deleteTeam(this)">Delete</button>
+
+                                </li>
+                                <% }) %>
                             </ul>
                         </div>
                     </div>
@@ -65,14 +59,13 @@
     <!-- Delete Team Form -->
     <form action="/delete-team" method="post">
         <!-- Delete Team Modal -->
-        <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modal-body">
                         <h8 id="confirm-delete-msg">
@@ -82,7 +75,8 @@
                     <div class="modal-footer">
                         <input type="hidden" id="modal-teamId" name="teamId" value="">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" id="delete-confirm-btn">Delete</button>
+                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
+                            id="delete-confirm-btn">Delete</button>
                     </div>
                 </div>
             </div>
@@ -98,8 +92,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="endModalLabel">End Tournament Confirmation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modal-body">
                         <h8 id="confirm-end-msg">
@@ -109,7 +102,8 @@
                     <div class="modal-footer">
                         <input type="hidden" id="modal-tournamentId" name="tournamentId" value="">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" id="end-confirm-btn">End</button>
+                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal"
+                            id="end-confirm-btn">End</button>
                     </div>
                 </div>
             </div>
@@ -141,7 +135,7 @@
         $('a[data-bs-toggle="list"]').on('show.bs.tab', function (e) {
             localStorage.setItem('activeTab', $(e.target).attr('href'));
         });
-        
+
         var activeTab = localStorage.getItem('activeTab')
 
         if (activeTab) {
@@ -182,32 +176,32 @@
         });
     });
 
-$('#end-confirm-btn').click((event) => {
-    event.preventDefault();
+    $('#end-confirm-btn').click((event) => {
+        event.preventDefault();
 
-    $.ajax({
-        global: false,
-        type: 'POST',
-        url: '/end-tournament',
-        dataType: 'html',
-        data: {
-            tournamentId: $("#modal-tournamentId").val()
-        }
+        $.ajax({
+            global: false,
+            type: 'POST',
+            url: '/end-tournament',
+            dataType: 'html',
+            data: {
+                tournamentId: $("#modal-tournamentId").val()
+            }
+        });
     });
-});
 </script>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io()
-    
+
     socket.emit('join', "adminTournaments")
     socket.emit('join', "adminTeams")
     socket.on('tournamentsUpdate', (tournaments) => {
         var tournamentsHtml = "";
         tournaments.forEach(tournament => {
             tournamentsHtml +=
-            `<li class="list-group-item p-3 tournament-listItem"
+                `<li class="list-group-item p-3 tournament-listItem"
             id="${tournament.name}-listItem"><span class="middle">
                 ${tournament.name}
             </span>
@@ -228,7 +222,7 @@ $('#end-confirm-btn').click((event) => {
         var teamsHtml = "";
         teams.forEach(team => {
             teamsHtml +=
-            `<li class="list-group-item p-3 team-listItem"
+                `<li class="list-group-item p-3 team-listItem"
             id="${team.teamName}-listItem"><span class="middle">
                 ${team.teamName}
             </span>
@@ -244,7 +238,7 @@ $('#end-confirm-btn').click((event) => {
         })
         $('#team-list').html(teamsHtml);
     })
-    
+
 </script>
 
 <%- include('./partials/footer') %>
