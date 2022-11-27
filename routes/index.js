@@ -82,7 +82,7 @@ router.get('/admin', userAuth.checkLoggedIn, roleAuth.isAdmin, (req, res) => {
             return;
         }
 
-        Tournament.find({}, (err, tournaments) => {
+        Tournament.find({}).populate("teams").exec((err, tournaments) => {
             if (err) throw err
             res.render('admin', { teams: teams, tournaments: tournaments })
         })

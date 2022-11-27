@@ -29,7 +29,12 @@
                                     <button type="button" id="<%= tournament.name %>-end-btn"
                                         class="btn btn-sm btn-outline-danger float-end endBtn mx-2"
                                         data-bs-toggle="modal" data-bs-target="#endModal" value="<%= tournament._id %>"
-                                        onclick="endTournament(this)">End</button>
+                                        onclick="endTournament(this)" name="<%= tournament.name %>">End
+                                    </button>
+                                    <button type="button" id="<%= tournament.name %>-view-btn"
+                                        class="btn btn-sm btn btn-primary float-end mx-2"
+                                        data-bs-toggle="modal" data-bs-target="#viewModal" tournament='<%- JSON.stringify(tournament, ) %>'>View
+                                    </button>
                                 </li>
                                 <% }) %>
                             </ul>
@@ -44,8 +49,8 @@
                                     <button type="button" id="<%= team.teamName %>-btn"
                                         class="btn btn-sm btn-outline-danger float-end deleteBtn mx-2"
                                         data-bs-toggle="modal" data-bs-target="#deleteModal" value="<%=team._id%>"
-                                        onclick="deleteTeam(this)">Delete</button>
-
+                                        onclick="deleteTeam(this)" name="<%= team.teamName %>">Delete
+                                    </button>
                                 </li>
                                 <% }) %>
                             </ul>
@@ -109,6 +114,24 @@
             </div>
         </div>
     </form>
+
+    <!-- View Tournament Modal -->
+    <div class="modal fade" id="viewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">View Tournament</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="viewModalBody">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <link rel="stylesheet" href="/stylesheets/admin.css">
 </body>
@@ -239,6 +262,41 @@
         $('#team-list').html(teamsHtml);
     })
 
+</script>
+
+<script>
+    $('#viewModal').on('show.bs.modal', (e) => {
+        var tournament = JSON.parse(e.relatedTarget.getAttribute('tournament'));
+        var html = '';
+        
+        if(tournament.teams.length > 0) {
+        html += `
+        <div style="margin: auto 10%;">
+        <h2>${tournament.name}</h2>
+        <table class="table table-hover mt-5">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Team Name</th>
+                </tr>
+            </thead>
+            <tbody id="team-list">`;
+        var i = 0;
+        tournament.teams.forEach(team => {
+            html += `
+            <tr>
+                <th scope="row">${i++}</th>
+                <td>${team.teamName}</td>
+            </tr>`
+        })
+
+        html += `</tbody></table></div>`;
+        } else {
+            html += '<h3 style="margin: auto 10%;">No Team Has Joined Yet</h3>';
+        }
+        
+        $('#viewModalBody').html(html);
+    })
 </script>
 
 <%- include('./partials/footer') %>
